@@ -1,7 +1,6 @@
 {
   "name": "vchat",
   "version": "0.1.0",
-  "homepage": "https://andresfelipe238.github.io/vchatv2",
   "private": true,
   "dependencies": {
     "firebase": "^9.14.0",
@@ -21,8 +20,6 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
