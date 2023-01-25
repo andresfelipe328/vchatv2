@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/vchatv2/static/css/main.30e69ff6.css",
+    "main.js": "/vchatv2/static/js/main.59838c90.js",
+    "static/js/734.fa961b35.chunk.js": "/vchatv2/static/js/734.fa961b35.chunk.js",
+    "static/media/no_requests.svg": "/vchatv2/static/media/no_requests.16c8e43c034037fb472437d4878a3739.svg",
+    "static/media/alone.svg": "/vchatv2/static/media/alone.3031c0b24347c7ee5817cae8aa393bb9.svg",
+    "static/media/app-icon.svg": "/vchatv2/static/media/app-icon.a5438db4f4d13d3dc5715f7fb1f8567d.svg",
+    "static/media/noResult.svg": "/vchatv2/static/media/noResult.667e95848d5846db757c376917cbb02a.svg",
+    "static/media/addfriend.svg": "/vchatv2/static/media/addfriend.6e1199b021d64228ca044d5a45bbc5eb.svg",
+    "index.html": "/vchatv2/index.html",
+    "static/media/defaultUser.svg": "/vchatv2/static/media/defaultUser.cdc53cf688918e405c26c1b81c07c499.svg",
+    "static/media/file.svg": "/vchatv2/static/media/file.10d96b2f5f8dc7707326574cfcfac2f8.svg",
+    "main.30e69ff6.css.map": "/vchatv2/static/css/main.30e69ff6.css.map",
+    "main.59838c90.js.map": "/vchatv2/static/js/main.59838c90.js.map",
+    "734.fa961b35.chunk.js.map": "/vchatv2/static/js/734.fa961b35.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.30e69ff6.css",
+    "static/js/main.59838c90.js"
+  ]
+}
