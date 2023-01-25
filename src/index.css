@@ -67,7 +67,7 @@
     @apply shadow-input;
     @apply hover:shadow-lg;
     @apply focus:shadow-lg;
-    @apply transition-all;
+    transition: all;
     @apply duration-200;
     @apply ease-out;
   }
