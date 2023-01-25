@@ -26,7 +26,7 @@ const RoomMngmt = () => {
    const [showNewMR, setShowNewMR] = useState(false)
    const [miniRoomID, setMiniRoomID] = useState('')
    const [showEdit, setShowEdit] = useState(false)
-   const {deleteMiniRoom} = useUserContext()
+   const {user, deleteMiniRoom} = useUserContext()
    const navigate = useNavigate()
    
    const roomRef = doc(db, 'rooms', id)
@@ -104,17 +104,19 @@ const RoomMngmt = () => {
                   {mainRoom.mainRoomName.length > 0 &&
                      <div className='flex items-center justify-between'>
                         <h4 className='font-semibold'>{mainRoom.mainRoomName}</h4>
-                        <div className='flex items-center'>
-                           <MainRoomSettings 
-                              name={mainRoom.mainRoomName} 
-                              setTypeEdit={setTypeEdit} 
-                              setShowEdit={setShowEdit} 
-                              setEditName={setEditName}
-                           />
-                           <CreateMiniRoom 
-                              mainRoomName={mainRoom.mainRoomName}
-                           />
-                        </div>
+                        { user.uid === data?.userID && 
+                           <div className='flex items-center'>
+                              <MainRoomSettings 
+                                 name={mainRoom.mainRoomName} 
+                                 setTypeEdit={setTypeEdit} 
+                                 setShowEdit={setShowEdit} 
+                                 setEditName={setEditName}
+                              />
+                              <CreateMiniRoom 
+                                 mainRoomName={mainRoom.mainRoomName}
+                              />
+                           </div>
+                        }
                      </div>
                   }
                   <ul className={`flex flex-col ${mainRoom.mainRoomName.length > 0 ? 'ml-4' : ''}`}>
@@ -128,14 +130,17 @@ const RoomMngmt = () => {
                            }
                            <small className='font-medium text-light_1'>{miniRoom.miniRoomName}</small>
 
-                           <div className='ml-auto opacity-0 group-hover/p:opacity-100 transition-all duration-200 ease-in-out'>
-                              <button onClick={(e) => handleEditMiniRoomName(e, miniRoom)} className='p-1 rounded-md hover:bg-mainBg hover hover:shadow-sm transition-all duration-200 ease-in-out'>
-                                 <AiFillEdit className='text-xs text-light_1/[.85]'/>
-                              </button>
-                              <button onClick={(e) => handleDeleteMiniRoom(e, mainRoom, miniRoom)} className='group/c p-1 rounded-md hover:bg-red-700 hover hover:shadow-sm transition-all duration-200 ease-in-out'>
-                                 <FaTrash className='text-xs text-red-700 group-hover/c:text-mainBg transition-all duration-200 ease-in-out'/>
-                              </button>
-                           </div>
+                           {user.uid === data?.userID &&
+                              <div className='ml-auto opacity-0 group-hover/p:opacity-100 transition-all duration-200 ease-in-out'>
+                                 <button onClick={(e) => handleEditMiniRoomName(e, miniRoom)} className='p-1 rounded-md hover:bg-mainBg hover hover:shadow-sm transition-all duration-200 ease-in-out'>
+                                    <AiFillEdit className='text-xs text-light_1/[.85]'/>
+                                 </button>
+                                 <button onClick={(e) => handleDeleteMiniRoom(e, mainRoom, miniRoom)} className='group/c p-1 rounded-md hover:bg-red-700 hover hover:shadow-sm transition-all duration-200 ease-in-out'>
+                                    <FaTrash className='text-xs text-red-700 group-hover/c:text-mainBg transition-all duration-200 ease-in-out'/>
+                                 </button>
+                              </div>
+                           }
+
 
                         </Link>
                      ))}

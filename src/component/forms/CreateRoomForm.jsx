@@ -32,19 +32,23 @@ const CreateRoomForm = ({show, setShow}) => {
    }
 
    const resizeFile = (file) =>
-      new Promise((resolve) => {
-         Resizer.imageFileResizer(
-            file,
-            300,
-            300,
-            "JPEG",
-            100,
-            0,
-            (uri) => {
-            resolve(uri);
-            },
-            "file"
-         );
+   new Promise((resolve) => {
+      const newFile = new File([file], 'roomIcon.', {
+         type: file.type,
+         lastModified: file.lastModified,
+      })
+      Resizer.imageFileResizer(
+         newFile,
+         300,
+         300,
+         "JPEG",
+         100,
+         0,
+         (uri) => {
+         resolve(uri);
+         },
+         "file"
+      );
    });
 
    const handleAddFile = (e) => {
@@ -93,7 +97,10 @@ const CreateRoomForm = ({show, setShow}) => {
          {err ?
                <small className='bg-red-700 rounded-md p-1 text-center w-full text-mainBg'>{err}</small>
             :
-               <button className='flex items-center justify-between bg-dark_2 text-mainBg rounded-md p-2 mt-5 mb-4 w-3/5 m-auto hover:bg-dark_1 transition-all duration-200 ease-out'>
+               <button 
+                  className='flex items-center justify-between bg-dark_2 text-mainBg rounded-md p-2 mt-5 mb-4 w-3/5 m-auto disabled:opacity-70 hover:bg-dark_1 transition-all duration-200 ease-out'
+                  disabled={(roomIcon && roomName.length > 0) ? false : true}
+               >
                   <small>Create</small>
                   <BsDoorOpenFill className='text-lg'/>
                </button>

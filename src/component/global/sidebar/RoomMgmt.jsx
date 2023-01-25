@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 const RoomMgmt = () => {
    const loc = useLocation()
    const {user} = useUserContext()
-   const userRef = doc(db, 'users', user?.displayName)
+   const userRef = doc(db, 'users', user.displayName)
    const [data] = useDocumentData(userRef);
    const navigate = useNavigate()
 

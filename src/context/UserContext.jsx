@@ -73,6 +73,7 @@ export const UserContextProvider = ({children}) => {
 
    const logout = async () => {
       setUser(null)
+      setUserAuth(false)
       await signOut(auth)
    }
 
@@ -712,6 +713,8 @@ export const UserContextProvider = ({children}) => {
       } 
       // delete doc
       await deleteDoc(doc(db, 'rooms', room.roomID))
+      // delete all room files
+      await deleteRoomFiles(room.roomID)
       // delete all miniRoomFiles
       for (let i = 0; i < room.mainRooms.length; ++i) {
          for (let j = 0; j < room.mainRooms[i].miniRooms.length; ++j) {
@@ -735,7 +738,68 @@ export const UserContextProvider = ({children}) => {
          console.log('DeletePtcRoom: ', err)
       }
    }
+
+   const deleteRoomFiles = async (roomID) => {
+      const room = `rooms/${roomID}`
+      const storageRef = ref(storage, room)
+  
+      listAll(storageRef)
+      .then((res) => {
+         res.prefixes.forEach((folderRef) => {
+            listAll(folderRef)
+            .then((res) => {
+               res.items.forEach((subItemRef) => {
+               deleteObject(subItemRef)
+            });
+            }).catch((error) => {
+               console.log('deleteRoomFiles-in-subFolders: ', error.message)
+            });
+         });
+         res.items.forEach((itemRef) => {
+            deleteObject(itemRef)
+         });
+         }).catch((error) => {
+            console.log('DeleteMiniRoomFiles: ', error.message)
+         });
+   }
    // End of Delete Room ==============================================================================================
+
+
+
+
+   // Leave Room ======================================================================================================
+   const leaveRoom = async (roomID) => {
+      // remove from list
+      const userRef = doc(db, 'users', user.displayName)
+      const userSnap = await getDoc(userRef)
+
+      if (userSnap.exists()) {
+         try {
+            const rooms = userSnap.data().rooms.filter(prev => prev.roomID !== roomID)
+
+            await updateDoc(userRef, {
+               rooms: rooms
+            })
+
+            const docRef = doc(db, 'rooms', roomID)
+            const docSnap = await getDoc(docRef)
+
+            if (docSnap.exists()) {
+               const participants = docSnap.data().participants.filter(ptc => ptc.participantID !== user.uid)
+               const participantIDs = docSnap.data().participantIDs.filter(ptcID => ptcID !== user.uid)
+
+               await updateDoc(docRef, {
+                  participants: participants,
+                  participantIDs: participantIDs
+               })
+            }
+         } catch(err) {
+            console.log('LeaveRoom: ', err)
+         }
+      }
+      // remove from room participants then participantIDs
+   }
+   // End of Leave Room ===============================================================================================
 
 
 
@@ -907,7 +971,6 @@ export const UserContextProvider = ({children}) => {
       }).catch((error) => {
         console.log('DeleteMiniRoomFiles: ', error.message)
       });
-  
    }
 
    const updateMainMiniRoomPtcs = async (roomSnap, newMainMiniRoom) => {
@@ -1224,7 +1287,7 @@ export const UserContextProvider = ({children}) => {
       <UserContext.Provider value={{userAuth, user, userStatus, requests, friends, signup, login, logout, finishSignup,
          sendRequest, completeRequest, deleteRequest, changeStatus, deleteFriend, createDMRoom, addToDmRoom, createMainRoom,
          sendMessage, pinMsg, deleteMsg, removeDmRoom, createRoom, createMiniRoom, editMainMiniName, deleteMiniRoom,
-         deleteRoom}}>
+         deleteRoom, leaveRoom}}>
          {loading ? null : children}
       </UserContext.Provider>
    )

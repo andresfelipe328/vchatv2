@@ -18,7 +18,7 @@ const MessageForm = ({replyToMsg, showReply, setShowReply, setReplyToMsg, msgFil
    const onEnterPress = async (e) => {
       if(e.keyCode === 13 && e.shiftKey === false) {
          e.preventDefault();
-         if (msg.length > 0) {
+         if (msg.length > 0 || msgFile) {
             const msgID = uuidv4()
             let type = '01'
             const message = {
